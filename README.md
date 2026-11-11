@@ -7,11 +7,11 @@ as you mark cups off below it.
 
 ## How it behaves
 
-The cups are a **level**, not a set of independent checkboxes. Clicking any cup
+The cups work as a single level. Clicking any cup
 fills every cup before it, and the gallon rises to match. Clicking a filled cup
 drains everything above it.
 
-There is one special case that makes the whole thing feel right:
+The click handler has one special case:
 
 ```js
 function highlightCups(index) {
@@ -29,10 +29,9 @@ function highlightCups(index) {
 }
 ```
 
-If you click the *last* filled cup — the current level — the handler steps the
-index back by one so the cup empties. Without it, tapping the level you are
-already at does nothing at all, and the control feels broken in the exact
-moment a user is most likely to try it.
+If you click the last filled cup (the current level), the handler steps the
+index back by one so the cup empties. Without that, tapping the level you are
+already at does nothing.
 
 ## Derived, not stored
 
@@ -46,9 +45,9 @@ percentage.style.height = `${(fullCups / totalCups) * 330}px`
 percentage.innerText = `${(fullCups / totalCups) * 100}%`
 ```
 
-Storing them instead would mean four values that have to be kept in agreement,
-and the bug where the label reads 75% while the liquid sits at 50% follows
-almost immediately. One source, recomputed, cannot desynchronise.
+Storing them would mean four values to keep in agreement, and a label reading
+75% while the liquid sits at 50% would follow quickly. With one count
+recomputed each time, they cannot drift apart.
 
 ## Stack
 
@@ -58,10 +57,10 @@ the animation is one CSS transition.
 
 ## Known limitations
 
-- **Nothing persists.** A refresh resets the day. `localStorage` keyed by date
+- Nothing persists. A refresh resets the day. `localStorage` keyed by date
   would be a handful of lines.
-- **The goal is hardcoded** in the markup rather than configurable.
-- **The percentage is not rounded** — seven of eight cups renders as
+- The goal is hardcoded in the markup.
+- The percentage is not rounded: seven of eight cups renders as
   `87.5%`.
 
 ## Running locally
